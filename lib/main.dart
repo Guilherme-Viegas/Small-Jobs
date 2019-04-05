@@ -18,15 +18,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Small Jobs',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
@@ -48,28 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    // Clean up the controller when the Widget is disposed
     myController.dispose();
     myController2.dispose();
     super.dispose();
-  }
-
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/token.txt');
-  }
-
-  Future<File> writeCounter(String token) async {
-    final file = await _localFile;
-
-    // Write the file
-    return file.writeAsString(token, mode: FileMode.write);
   }
 
   void getToken() async {
@@ -77,13 +49,15 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       var resBody = json.decode(res.body);
       Token = resBody["token"];
-      writeCounter(Token);
     });
     Navigator.of(context).push(
         new MaterialPageRoute(builder: (
             BuildContext context) =>
-        new AvailableJobs(
-            token: Token)));
+                new AvailableJobs(
+                    token: Token
+                )
+        )
+    );
   }
 
 
