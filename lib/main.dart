@@ -65,22 +65,38 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        padding: new EdgeInsets.all(5.0),
+        margin: new EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextField(
+            TextFormField(
               controller: myController,
+              autocorrect: false,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Username'
+                  border: new OutlineInputBorder(
+                    borderSide: new BorderSide(width: 1.0, color: Colors.white),
+                  ),
+                  labelStyle: new TextStyle(
+                    color: Colors.lightGreen
+                  ),
+                  labelText: "Username",
+                  hintText: 'Username',
               ),
             ),
-            TextField(
+            TextFormField(
               controller: myController2,
+              autocorrect: false,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Password'
+                border: new OutlineInputBorder(
+                  borderSide: new BorderSide(width: 1.0, color: Colors.white),
+                ),
+                labelStyle: new TextStyle(
+                    color: Colors.lightGreen
+                ),
+                labelText: "Password",
+                hintText: 'Password',
               ),
             ),
             RaisedButton(
