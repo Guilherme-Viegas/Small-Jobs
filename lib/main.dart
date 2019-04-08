@@ -64,46 +64,59 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: new EdgeInsets.all(5.0),
-        margin: new EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
+            SizedBox(height: 80.0),
+            Column(
+              children: <Widget>[
+                Image.asset('assets/login_icon.png'),
+              ]
+            ),
+            SizedBox(height: 86.0),
             TextFormField(
               controller: myController,
               autocorrect: false,
               decoration: InputDecoration(
-                  border: new OutlineInputBorder(
-                    borderSide: new BorderSide(width: 1.0, color: Colors.white),
-                  ),
-                  labelStyle: new TextStyle(
+                border: new OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(26),
+                  borderSide: new BorderSide(width: 0, color: Colors.blue, style: BorderStyle.none),
+                ),
+                labelStyle: new TextStyle(
                     color: Colors.lightGreen
-                  ),
-                  labelText: "Username",
-                  hintText: 'Username',
+                ),
+                labelText: "Email",
+                hintText: 'example@gmail.com',
+                hintStyle: TextStyle(fontSize: 16),
+                filled: true,
+                contentPadding: EdgeInsets.all(18),
               ),
             ),
+            SizedBox(height: 16.0),
             TextFormField(
               controller: myController2,
+              obscureText: true,
               autocorrect: false,
               decoration: InputDecoration(
                 border: new OutlineInputBorder(
-                  borderSide: new BorderSide(width: 1.0, color: Colors.white),
+                  borderRadius: BorderRadius.circular(26),
+                  borderSide: new BorderSide(width: 0, color: Colors.blue, style: BorderStyle.none),
                 ),
                 labelStyle: new TextStyle(
                     color: Colors.lightGreen
                 ),
                 labelText: "Password",
-                hintText: 'Password',
+                hintText: '*********',
+                contentPadding: EdgeInsets.all(18),
               ),
             ),
+            SizedBox(height: 46),
             RaisedButton(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(18.0),
               onPressed: () => getToken(),
               color: Colors.blue,
-              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(26.0)),
               elevation: 2.0,
               child: new Text("Login",
                   style: TextStyle(
@@ -111,9 +124,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,)),
             ),
-          ],
+            SizedBox(height: 16),
+            Text("Forgot Password?",
+              style: TextStyle(
+                fontSize: 16.0, color: Colors.grey
+              ),
+            ),
+          ]
         ),
-      ),
+      )
     );
   }
 }
