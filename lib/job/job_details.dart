@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:small_jobs/sample_job/taken_job_details.dart';
+
 
 class JobDetails extends StatefulWidget {
   final String token;
@@ -14,14 +16,22 @@ class JobDetails extends StatefulWidget {
 }
 
 class JobDetailsState extends State<JobDetails> {
-  Map data;
+  int data;
 
   Future takeJob() async {
-    var res = await http.get(Uri.encodeFull("https://small-jobs-backend.herokuapp.com/jobs/take"), headers: {"Accept": "application/json", "Authorization": "Token " + widget.token}); // Not finished. I need to change the backend to get the id in the url and not the body because we can't do a get with body on flutter
+    var res = await http.get(Uri.encodeFull("https://small-jobs-backend.herokuapp.com/jobs/take/job=" + widget.details["id"].toString()), headers: {"Accept": "application/json", "Authorization": "Token " + widget.token});
     setState(() {
       var resBody = json.decode(res.body);
-      data = resBody;
+      data = resBody["taken_job_id"];
     });
+    Navigator.of(context).push(
+        new MaterialPageRoute(builder: (
+            BuildContext context) =>
+        new TakenJobDetails(
+            taken_job_id: data
+        )
+        )
+    );
   }
 
   @override
