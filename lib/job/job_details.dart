@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:small_jobs/sample_job/taken_job_details.dart';
+import 'package:small_jobs/taken_job/taken_job_details.dart';
 
 
 class JobDetails extends StatefulWidget {
@@ -27,9 +26,10 @@ class JobDetailsState extends State<JobDetails> {
     Navigator.of(context).push(
         new MaterialPageRoute(builder: (
             BuildContext context) =>
-        new TakenJobDetails(
-            taken_job_id: data
-        )
+          new TakenJobDetails(
+              taken_job_id: data,
+              token: widget.token
+          )
         )
     );
   }
