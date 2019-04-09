@@ -2,24 +2,24 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:small_jobs/job/job_details.dart';
-import 'package:small_jobs/taken_job/active_created_jobs.dart';
+import 'package:small_jobs/taken_job/taken_job_details.dart';
 
 
-class AvailableJobs extends StatefulWidget {
+class ActiveCreatedJobs extends StatefulWidget {
   final String token;
 
-  const AvailableJobs({Key key, this.token}) : super(key: key);
+  const ActiveCreatedJobs({Key key, this.token}) : super(key: key);
 
   @override
-  AvailableJobsState createState() => AvailableJobsState();
+  ActiveCreatedJobsState createState() => ActiveCreatedJobsState();
 }
 
 
-class AvailableJobsState extends State<AvailableJobs> {
+class ActiveCreatedJobsState extends State<ActiveCreatedJobs> {
   List data;
 
   void getData() async {
-    var res = await http.get(Uri.encodeFull("https://small-jobs-backend.herokuapp.com/jobs/jobs"), headers: {"Accept": "application/json", "Authorization": "Token " + widget.token});
+    var res = await http.get(Uri.encodeFull("https://small-jobs-backend.herokuapp.com/jobs/user/active"), headers: {"Accept": "application/json", "Authorization": "Token " + widget.token});
     setState(() {
       var resBody = json.decode(res.body);
       data = resBody;
@@ -44,7 +44,7 @@ class AvailableJobsState extends State<AvailableJobs> {
       backgroundColor: new Color.fromRGBO(240, 240, 240, 4),
       appBar: AppBar(
         title: Text(
-            "Jobs",
+            "Your Active Created Jobs",
             style: TextStyle(
                 color: Colors.amberAccent)
         ),
@@ -56,9 +56,9 @@ class AvailableJobsState extends State<AvailableJobs> {
             icon: Icon(Icons.account_circle),
             color: Colors.blue ,
             tooltip: 'Your active created jobs',
-            onPressed: () => Navigator.of(context).push(
-                new MaterialPageRoute(builder: (
-                    BuildContext context) => new ActiveCreatedJobs(token: widget.token,))),
+//            onPressed: () => Navigator.of(context).push(
+//                new MaterialPageRoute(builder: (
+//                    BuildContext context) => new SavedRecipesStage())),
           ),
         ],
       ),
@@ -72,7 +72,7 @@ class AvailableJobsState extends State<AvailableJobs> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   InkWell(
-                    onTap: () =>   Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new JobDetails(token: widget.token, details: data[index]))),
+                    onTap: () =>   Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new TakenJobDetails(token: widget.token, taken_job_id: data[index]["id"]))),
                     child: Column(
                       children: <Widget>[
                         Text(data[index]["title"]),
