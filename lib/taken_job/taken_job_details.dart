@@ -28,6 +28,8 @@ class TakenJobDetailsState extends State<TakenJobDetails> {
     setState(() {
       var resBody = json.decode(res.body);
       data = resBody;
+      print(data["worker_done"]);
+      print(data["owner_done"]);
       if(data["worker_done"] == true && data["owner_done"] == true){
         done_job = true;
       }else{
@@ -41,7 +43,7 @@ class TakenJobDetailsState extends State<TakenJobDetails> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () => CheckDoneJob());
+    Timer.periodic(Duration(seconds: 3), (Timer t) => CheckDoneJob());
   }
 
   @override
