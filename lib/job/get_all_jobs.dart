@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:small_jobs/job/create_job.dart';
@@ -26,15 +27,90 @@ class AvailableJobsState extends State<AvailableJobs> {
   Location location = new Location();
   String error;
 
-
+  double distance(double lat, double long){
+    return sqrt(pow((lat - currentLocation['latitude']), 2) + pow((long - currentLocation['longitude']), 2));
+  }
 
   void getData() async {
     var res = await http.get(Uri.encodeFull("https://small-jobs-backend.herokuapp.com/jobs/jobs"), headers: {"Accept": "application/json", "Authorization": "Token " + widget.token});
     setState(() {
       var resBody = json.decode(res.body);
       data = resBody;
+      sortList(0, data.length - 1);
     });
   }
+
+  void merge(int l, int m, int r)
+  {
+    // Find sizes of two subarrays to be merged
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    /* Create temp arrays */
+    List L = new List(n1);
+    List R = new List(n2);
+
+    /*Copy data to temp arrays*/
+    for (int i=0; i<n1; ++i)
+      L[i] = data[l + i];
+    for (int j=0; j<n2; ++j)
+      R[j] = data[m + 1+ j];
+
+
+    /* Merge the temp arrays */
+
+    // Initial indexes of first and second subarrays
+    int i = 0, j = 0;
+
+    // Initial index of merged subarry array
+    int k = l;
+    while (i < n1 && j < n2)
+    {
+      if (distance(L[i]["latitude"], L[i]["longitude"]) <= distance(R[j]["latitude"], R[j]["longitude"]) )
+      {
+        data[k] = L[i];
+        i++;
+      }
+      else
+      {
+        data[k] = R[j];
+        j++;
+      }
+      k++;
+    }
+
+    /* Copy remaining elements of L[] if any */
+    while (i < n1)
+    {
+      data[k] = L[i];
+      i++;
+      k++;
+    }
+
+    /* Copy remaining elements of R[] if any */
+    while (j < n2)
+    {
+      data[k] = R[j];
+      j++;
+      k++;
+    }
+  }
+
+  void sortList(int l, int r) {
+    if (l < r) {
+      // Find the middle point
+      int m = ((l + r) / 2).toInt();
+
+      // Sort first and second halves
+      sortList(l, m);
+      sortList(m + 1, r);
+
+      // Merge the sorted halves
+      merge(l, m, r);
+    }
+  }
+
+
 
   @override
   void initState() {
@@ -76,9 +152,6 @@ class AvailableJobsState extends State<AvailableJobs> {
     super.dispose();
   }
 
-  void createJob() {
-
-  }
 
 
   @override

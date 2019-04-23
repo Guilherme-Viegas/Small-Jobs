@@ -18,6 +18,7 @@ class TakenJobDetails extends StatefulWidget {
 class TakenJobDetailsState extends State<TakenJobDetails> {
   Map data;
   bool done_job;
+  int i = 0;
 
   void verifyJob() async {
     await http.get(Uri.encodeFull("https://small-jobs-backend.herokuapp.com/jobs/validate/job=" + widget.taken_job_id.toString()), headers: {"Accept": "application/json", "Authorization": "Token " + widget.token});
@@ -28,13 +29,12 @@ class TakenJobDetailsState extends State<TakenJobDetails> {
     setState(() {
       var resBody = json.decode(res.body);
       data = resBody;
-      print(data["worker_done"]);
-      print(data["owner_done"]);
       if(data["worker_done"] == true && data["owner_done"] == true){
         done_job = true;
       }else{
         done_job = false;
       }
+      i++;
     });
     return done_job;
   }
